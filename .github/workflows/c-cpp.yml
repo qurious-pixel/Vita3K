@@ -43,7 +43,7 @@ jobs:
             SDL2VER: 2.0.16
             cache_path: |
               ~/.ccache
-              SDL2-${{ SDL2VER }}
+              SDL2-${{ matrix.SDL2VER }}
             extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/linux-x64.cmake -DUSE_DISCORD_RICH_PRESENCE=OFF
           #- os: windows-latest
           #  cache_path: ~\AppData\Local\Mozilla\sccache
