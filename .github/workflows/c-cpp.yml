@@ -29,14 +29,14 @@ jobs:
   build:
     needs: [move-tag, format-check]
     runs-on: ${{ matrix.os }}
+    env:
+      SDL2VER: 2.0.16
 
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest] # [macos-latest, ubuntu-latest, windows-latest]
         config: [Release]
-        env:
-          SDL2VER: 2.0.16
         include:
           #- os: macos-latest
           #  cache_path: ~/Library/Caches/ccache
