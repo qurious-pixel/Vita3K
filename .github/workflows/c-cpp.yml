@@ -70,8 +70,10 @@ jobs:
       - name: Set up SDL 2.0.16 (ubuntu-latest)
         run: |
           SDL2VER=2.0.16
+          if [[ ! -e "$GITHUB_WORKSPACE"/SDL ]]; then
+            mkdir "$GITHUB_WORKSPACE"/SDL && cd "$GITHUB_WORKSPACE"/SDL
+          fi  
           ls -al "$GITHUB_WORKSPACE"/SDL
-          mkdir "$GITHUB_WORKSPACE"/SDL && cd "$GITHUB_WORKSPACE"/SDL
           curl -sLO https://libsdl.org/release/SDL2-${SDL2VER}.tar.gz
           tar -xzf SDL2-${SDL2VER}.tar.gz
           cd SDL2-${SDL2VER}
