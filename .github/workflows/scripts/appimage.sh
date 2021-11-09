@@ -53,7 +53,7 @@ chmod a+x linuxdeploy-plugin-appimage-x86_64.AppImage
 
 UPDATE_INFORMATION="gh-releases-zsync|qurious-pixel|$BINARY|continuous|$BINARY-x86_64.AppImage.zsync"
 OUTPUT="$BINARY-x86_64.AppImage"
-"$GITHUB_WORKSPACE"/linuxdeploy-x86_64.AppImage
+"$GITHUB_WORKSPACE"/linuxdeploy-x86_64.AppImage \
   --appdir="$GITHUB_WORKSPACE"/AppDir \
   --executable="$GITHUB_WORKSPACE"/AppDir/usr/bin/"$BINARY" \
   --desktop-file="$GITHUB_WORKSPACE"/AppDir/"$BINARY".desktop \
