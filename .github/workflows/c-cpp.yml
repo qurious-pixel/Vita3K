@@ -42,7 +42,7 @@ jobs:
           - os: ubuntu-latest
             cache_path: |
               ~/.ccache
-              SDL
+              "$GITHUB_WORKSPACE"/SDL
             extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/linux-x64.cmake -DUSE_DISCORD_RICH_PRESENCE=OFF
           #- os: windows-latest
           #  cache_path: ~\AppData\Local\Mozilla\sccache
@@ -70,7 +70,8 @@ jobs:
       - name: Set up SDL 2.0.16 (ubuntu-latest)
         run: |
           SDL2VER=2.0.16
-          mkdir SDL && cd SDL
+          ls -al "$GITHUB_WORKSPACE"/SDL
+          mkdir "$GITHUB_WORKSPACE"/SDL && cd "$GITHUB_WORKSPACE"/SDL
           curl -sLO https://libsdl.org/release/SDL2-${SDL2VER}.tar.gz
           tar -xzf SDL2-${SDL2VER}.tar.gz
           cd SDL2-${SDL2VER}
