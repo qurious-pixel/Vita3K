@@ -7,7 +7,7 @@ mkdir -p AppDir/usr/bin
 cp build/bin/"$BINARY" AppDir/usr/bin
 cp -r build/bin/{data,lang,shaders-builtin} AppDir/usr/bin 
 cp data/image/icon.png AppDir/"$BINARY".png
-cp .github/workflows/scripts/ AppDir/"$BINARY".desktop
+cp .github/workflows/scripts/"$BINARY".desktop AppDir/"$BINARY".desktop
 #cp AppDir/update.sh
 #cp AppDir/AppRun
 curl -sL https://github.com/AppImage/AppImageKit/releases/download/continuous/AppRun-x86_64 -o AppDir/AppRun
