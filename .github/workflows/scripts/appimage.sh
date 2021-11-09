@@ -4,8 +4,9 @@ BRANCH=`echo ${GITHUB_REF##*/}`
 BINARY=Vita3K
 
 mkdir -p AppDir/usr/bin
-cp build/bin/"$BINARY"
-cp data/image/icon.png -o AppDir/"$BINARY".png
+cp build/bin/"$BINARY" AppDir/usr/bin
+cp -r build/bin/{data,lang,shaders-builtin} AppDir/usr/bin 
+cp data/image/icon.png AppDir/"$BINARY".png
 cp .github/workflows/scripts/ AppDir/"$BINARY".desktop
 #cp AppDir/update.sh
 #cp AppDir/AppRun
