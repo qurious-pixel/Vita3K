@@ -42,7 +42,7 @@ jobs:
           - os: ubuntu-latest
             cache_path: |
               ~/.ccache
-              SDL2-2.0.16
+              SDL
             extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/linux-x64.cmake -DUSE_DISCORD_RICH_PRESENCE=OFF
           #- os: windows-latest
           #  cache_path: ~\AppData\Local\Mozilla\sccache
@@ -58,12 +58,19 @@ jobs:
       - name: Set up build environment (ubuntu-latest)
         run: |
           sudo apt-get update
-          sudo apt-get -y install ccache libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libgtk-3-dev libsdl2-dev ninja-build clang-11
+          sudo apt-get -y install ccache libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libgtk-3-dev libsdl2-dev ninja-build clang-11 libclang-11-dev
         if: matrix.os == 'ubuntu-latest'
+        
+      - uses: actions/cache@v2
+        with:
+          path: ${{ matrix.cache_path }}
+          key: ccache-${{ matrix.os }}-${{ matrix.config }}-${{ github.sha }}
+          restore-keys: ccache-${{ matrix.os }}-${{ matrix.config }}-   
         
       - name: Set up SDL 2.0.16 (ubuntu-latest)
         run: |
           SDL2VER=2.0.16
+          mkdir SDL && cd SDL
           curl -sLO https://libsdl.org/release/SDL2-${SDL2VER}.tar.gz
           tar -xzf SDL2-${SDL2VER}.tar.gz
           cd SDL2-${SDL2VER}
@@ -81,12 +88,6 @@ jobs:
           scoop install ninja sccache --global
           echo "${env:PATH}" >> ${env:GITHUB_PATH}
         if: matrix.os == 'windows-latest'
-
-      - uses: actions/cache@v2
-        with:
-          path: ${{ matrix.cache_path }}
-          key: ccache-${{ matrix.os }}-${{ matrix.config }}-${{ github.sha }}
-          restore-keys: ccache-${{ matrix.os }}-${{ matrix.config }}-
 
       - uses: actions/checkout@v2
         with:
