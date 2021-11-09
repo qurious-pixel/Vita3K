@@ -103,6 +103,12 @@ jobs:
           cmake --build build --config ${{ matrix.config }}
         if: matrix.os != 'windows-latest'
 
+      - name: Package AppImage
+        run: |
+          chmod +x .github/workflows/scripts/appimage.sh
+          .github/workflows/scripts/appimage.sh
+        if: matrix.os == 'ubuntu-latest'
+
       - name: CMake
         shell: cmd
         run: |
@@ -122,7 +128,9 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: vita3k-${{ steps.git_short_sha.outputs.value }}-${{ matrix.os }}
-          path: build/bin
+          path: |
+            build/bin
+            artifacts
 
       - name: Zip Artifacts
         uses: papeloto/action-zip@v1
@@ -140,7 +148,7 @@ jobs:
           release_name: "Automatic CI builds"
           body_mrkdwn: |
             _This is the newest build, but Github date can't be updated. Corresponding commit: ${{ github.sha }}_
-          assets: ${{ matrix.os }}.zip
+          assets: ${{ matrix.os }}.zip;Vita3k-x86_64.AppImage*
           replace_assets: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' | 'refs/heads/appimage'
