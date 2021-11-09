@@ -137,7 +137,7 @@ jobs:
         with:
           files: build/bin
           dest: ${{ matrix.os }}.zip
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' || 'refs/heads/appimage'
 
       - name: Update the CI tag
         uses: Xotl/cool-github-releases@v1
