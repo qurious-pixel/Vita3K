@@ -40,12 +40,16 @@ jobs:
           #  cache_path: ~/Library/Caches/ccache
           #  extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/macos-x64.cmake
           - os: ubuntu-latest
-            cache_path: ~/.ccache
+            cache_path: |
+              ~/.ccache
+              SDL2-${{ env.SDL2VER }}
             extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/linux-x64.cmake -DUSE_DISCORD_RICH_PRESENCE=OFF
           #- os: windows-latest
           #  cache_path: ~\AppData\Local\Mozilla\sccache
           #  extra_cmake_args: -DBOOST_ROOT=C:\hostedtoolcache\windows\Boost\1.72.0\x86_64 -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/windows-x64.cmake -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
-
+        env:
+          SDL2VER: 2.0.16
+          
     steps:
       - name: Set up build environment (macos-latest)
         run: |
@@ -61,13 +65,14 @@ jobs:
         
       - name: Set up SDL 2.0.16 (ubuntu-latest)
         run: |
-          SDL2VER=2.0.16
-          curl -sLO https://libsdl.org/release/SDL2-${SDL2VER}.tar.gz
-          tar -xzf SDL2-${SDL2VER}.tar.gz
-          cd SDL2-${SDL2VER}
+          #SDL2VER=2.0.16
+          echo ${{ env.SDL2VER }}
+          curl -sLO https://libsdl.org/release/SDL2-${{ env.SDL2VER }}.tar.gz
+          tar -xzf SDL2-${{ env.SDL2VER }}.tar.gz
+          cd SDL2-${{ env.SDL2VER }}
           ./configure --prefix=/usr
           make && sudo make install
-          rm ../SDL2-${SDL2VER}.tar.gz 
+          rm ../SDL2-${{ env.SDL2VER }}.tar.gz 
         if: matrix.os == 'ubuntu-latest'        
 
       - name: Set up build environment (windows-latest)
