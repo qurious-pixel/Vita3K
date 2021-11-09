@@ -45,3 +45,6 @@ ls -al ./AppDir
 wget "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
 chmod a+x appimagetool-x86_64.AppImage
 ./appimagetool-x86_64.AppImage AppDir/ -u "gh-releases-zsync|qurious-pixel|"$BINARY"|continuous|"$BINARY"-x86_64.AppImage.zsync"
+
+mkdir artifacts
+mv "$BINARY"-x86_64.AppImage* artifacts
