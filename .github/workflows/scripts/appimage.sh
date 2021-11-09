@@ -46,13 +46,13 @@ ls -al ./AppDir
 #chmod a+x appimagetool-x86_64.AppImage
 #./appimagetool-x86_64.AppImage AppDir/ -u "gh-releases-zsync|qurious-pixel|"$BINARY"|continuous|"$BINARY"-x86_64.AppImage.zsync"
 
-https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
-https://github.com/linuxdeploy/linuxdeploy-plugin-appimage/releases/download/continuous/linuxdeploy-plugin-appimage-x86_64.AppImage
+curl -sLO https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+curl -sLO https://github.com/linuxdeploy/linuxdeploy-plugin-appimage/releases/download/continuous/linuxdeploy-plugin-appimage-x86_64.AppImage
 chmod a+x linuxdeploy-x86_64.AppImage
 chmod a+x linuxdeploy-plugin-appimage-x86_64.AppImage
 
-UPDATE_INFORMATION="gh-releases-zsync|qurious-pixel|"$BINARY"|continuous|"$BINARY"-x86_64.AppImage.zsync"
-OUTPUT="$BINARY"-x86_64.AppImage"
+UPDATE_INFORMATION="gh-releases-zsync|qurious-pixel|$BINARY|continuous|$BINARY-x86_64.AppImage.zsync"
+OUTPUT="$BINARY-x86_64.AppImage"
 "$GITHUB_WORKSPACE"/linuxdeploy-x86_64.AppImage
   --appdir="$GITHUB_WORKSPACE"/AppDir \
   --executable="$GITHUB_WORKSPACE"/AppDir/usr/bin/"$BINARY" \
