@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Vita3K
+StartupWMClass=Vita3K
+GenericName=PlayStation Vita Emulator
+Comment=Sony PlayStation Vita emulator
+Exec=Vita3K
+Icon=Vita3K
+Keywords=game;emulator;
+Categories=Game;Emulator;
