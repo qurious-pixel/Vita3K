@@ -68,12 +68,14 @@ jobs:
       - name: Set up SDL 2.0.16 (ubuntu-latest)
         run: |
           SDL2VER=2.0.16
-          cd ~/.ccache
+          if [[ ! -e ~/.ccache ]]; then
+            mkdir ~/.ccache && cd ~/.ccache
+          fi  
           ls -al ~/.ccache
-          if [[ ! -e SDL2-${SDL2VER}.tar.gz ]]; then
+          if [[ ! -e SDL2-${SDL2VER} ]]; then
             curl -sLO https://libsdl.org/release/SDL2-${SDL2VER}.tar.gz
+            tar -xzf SDL2-${SDL2VER}.tar.gz
           fi
-          tar -xzf SDL2-${SDL2VER}.tar.gz
           cd SDL2-${SDL2VER}
           ./configure --prefix=/usr
           make && sudo make install
