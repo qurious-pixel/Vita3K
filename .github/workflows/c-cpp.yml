@@ -75,10 +75,11 @@ jobs:
           if [[ ! -e SDL2-${SDL2VER} ]]; then
             curl -sLO https://libsdl.org/release/SDL2-${SDL2VER}.tar.gz
             tar -xzf SDL2-${SDL2VER}.tar.gz
+            cd SDL2-${SDL2VER}
+            ./configure --prefix=/usr
+            make && cd ../
           fi
-          cd SDL2-${SDL2VER}
-          ./configure --prefix=/usr
-          make && sudo make install
+          sudo make -C SDL2-${SDL2VER} install
           rm ../SDL2-${SDL2VER}.tar.gz 
         if: matrix.os == 'ubuntu-latest'        
 
