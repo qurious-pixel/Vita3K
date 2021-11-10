@@ -69,9 +69,9 @@ jobs:
         run: |
           SDL2VER=2.0.16
           if [[ ! -e ~/.ccache ]]; then
-            mkdir ~/.ccache && cd ~/.ccache
+            mkdir ~/.ccache
           fi  
-          ls -al ~/.ccache
+          cd ~/.ccache
           if [[ ! -e SDL2-${SDL2VER} ]]; then
             curl -sLO https://libsdl.org/release/SDL2-${SDL2VER}.tar.gz
             tar -xzf SDL2-${SDL2VER}.tar.gz
