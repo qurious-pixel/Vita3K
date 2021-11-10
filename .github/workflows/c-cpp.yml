@@ -148,7 +148,7 @@ jobs:
           release_name: "Automatic CI builds"
           body_mrkdwn: |
             _This is the newest build, but Github date can't be updated. Corresponding commit: ${{ github.sha }}_
-          assets: ${{ matrix.os }}.zip;Vita3k-x86_64.AppImage|artifacts\Vita3k-x86_64.AppImage;Vita3k-x86_64.AppImage.zsync|artifacts\Vita3k-x86_64.AppImage.zsync
+          assets: ${{ matrix.os }}.zip;Vita3K-x86_64.AppImage|artifacts\Vita3K-x86_64.AppImage;Vita3K-x86_64.AppImage.zsync|artifacts\Vita3K-x86_64.AppImage.zsync
           replace_assets: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
         if: github.ref == 'refs/heads/master' || 'refs/heads/appimage'
