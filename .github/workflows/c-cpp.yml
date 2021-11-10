@@ -80,6 +80,7 @@ jobs:
             make && cd ../
           fi
           sudo make -C SDL2-${SDL2VER} install
+          ls -al .
           rm SDL2-${SDL2VER}.tar.gz 
         if: matrix.os == 'ubuntu-latest'        
 
