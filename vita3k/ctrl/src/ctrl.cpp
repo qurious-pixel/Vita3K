@@ -19,6 +19,9 @@
 #include <ctrl/functions.h>
 #include <ctrl/state.h>
 
+#include <SDL_gamecontroller.h>
+#include <SDL_hints.h>
+#include <SDL_joystick.h>
 #include <SDL_keyboard.h>
 
 static uint64_t timestamp;
