@@ -282,7 +282,11 @@ file(GLOB LIBATRAC9_SOURCES
     LibAtrac9/C/src/*.h
 )
 
-add_library(libatrac9 STATIC ${LIBATRAC9_SOURCES})
+if(WIN32)
+  add_library(libatrac9 SHARED ${LIBATRAC9_SOURCES})
+else()
+  add_library(libatrac9 STATIC ${LIBATRAC9_SOURCES})
+endif()
 target_include_directories(libatrac9 PUBLIC LibAtrac9/C/src)
 set_target_properties(libatrac9 PROPERTIES
 	RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
