@@ -148,10 +148,12 @@ jobs:
 
       - name: Upload
         run: |
-            ls -al build/bin
+            mkdir artifacts/
+            mv ${{ matrix.os }}.zip artifacts/
+            ls -al artifacts
             wget -c https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
             tar xfv ghr_v0.13.0_linux_amd64.tar.gz
-            ghr_v0.13.0_linux_amd64/ghr -u qurious-pixel -r Vita3K -recreate -n 'Continuous build' -b "Vita3K Build" continuous build/bin/
+            ghr_v0.13.0_linux_amd64/ghr -u qurious-pixel -r Vita3K -recreate -n 'Continuous build' -b "Vita3K Build" continuous artifacts/
         env:
           DEFAULT_BRANCH: release-date
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
