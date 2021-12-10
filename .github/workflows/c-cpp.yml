@@ -33,18 +33,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
         config: [Release]
         include:
-          - os: macos-latest
-            cache_path: ~/Library/Caches/ccache
-            extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/macos-x64.cmake
+          #- os: macos-latest
+          #  cache_path: ~/Library/Caches/ccache
+          #  extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/macos-x64.cmake
           - os: ubuntu-latest
             cache_path: ~/.ccache
             extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/linux-x64.cmake -DUSE_DISCORD_RICH_PRESENCE=OFF
-          - os: windows-latest
-            cache_path: ~\AppData\Local\Mozilla\sccache
-            extra_cmake_args: -DBOOST_ROOT=C:\hostedtoolcache\windows\Boost\1.72.0\x86_64 -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/windows-x64.cmake -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
+          #- os: windows-latest
+          #  cache_path: ~\AppData\Local\Mozilla\sccache
+          #  extra_cmake_args: -DBOOST_ROOT=C:\hostedtoolcache\windows\Boost\1.72.0\x86_64 -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/windows-x64.cmake -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
 
     steps:
       - name: Set up build environment (macos-latest)
@@ -130,18 +130,29 @@ jobs:
         with:
           files: build/bin
           dest: ${{ matrix.os }}.zip
-        if: github.ref == 'refs/heads/master'
+      #  if: github.ref == 'refs/heads/master'
 
-      - name: Update the CI tag
-        uses: Xotl/cool-github-releases@v1
-        with:
-          mode: update
-          isPrerelease: false
-          tag_name: continous
-          release_name: "Automatic CI builds"
-          body_mrkdwn: |
-            _This is the newest build, but Github date can't be updated. Corresponding commit: ${{ github.sha }}_
-          assets: ${{ matrix.os }}.zip
-          replace_assets: true
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-        if: github.ref == 'refs/heads/master'
+      #- name: Update the CI tag
+      #  uses: Xotl/cool-github-releases@v1
+      #  with:
+      #    mode: update
+      #    isPrerelease: false
+      #    tag_name: continous
+      #    release_name: "Automatic CI builds"
+      #    body_mrkdwn: |
+      #      _This is the newest build, but Github date can't be updated. Corresponding commit: ${{ github.sha }}_
+      #    assets: ${{ matrix.os }}.zip
+      #    replace_assets: true
+      #    github_token: ${{ secrets.GITHUB_TOKEN }}
+      #  if: github.ref == 'refs/heads/master'
+
+      - name: Upload
+        run: |
+            ls -al build/bin
+            wget -c https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
+            tar xfv ghr_v0.13.0_linux_amd64.tar.gz
+            ghr_v0.13.0_linux_amd64/ghr -u qurious-pixel -r Vita3K -recreate -n 'Continuous build' -b "Vita3K Build" continuous build/bin
+        env:
+          DEFAULT_BRANCH: release-date
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: ${{ matrix.os }}
