@@ -155,29 +155,30 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-      steps:
-      - uses: actions/checkout@v2
+    steps:
+    - uses: actions/checkout@v2
 
-      - uses: actions/download-artifact@v2
-        with:
-          path: artifacts
+    - uses: actions/download-artifact@v2
+      with:
+        path: artifacts
     
-      - name: Display structure of downloaded files
-        run: ls -R
-        working-directory: artifacts
+    - name: Display structure of downloaded files
+      run: ls -R
+      working-directory: artifacts
           
-      - name: Upload
-        shell: bash
-        run: |
-            #mkdir artifacts/
-            ls -al
-            echo "steps ${{ steps.git_short_sha.outputs.value }}"
-            #mv *-latest.zip artifacts/
-            ls -al artifacts/
-            wget -c https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
-            tar xfv ghr_v0.13.0_linux_amd64.tar.gz
-            ghr_v0.13.0_linux_amd64/ghr -u qurious-pixel -r Vita3K -recreate -n 'Automatic CI builds' -b "Corresponding commit: ${{ github.sha }}" continuous artifacts/
-        env:
-          DEFAULT_BRANCH: release-date
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          name: ${{ matrix.os }}
+    - name: Upload
+      shell: bash
+      run: |
+          #mkdir artifacts/
+          ls -al
+          echo "steps ${{ steps.git_short_sha.outputs.value }}"
+          #mv *-latest.zip artifacts/
+          ls -al artifacts/
+          wget -c https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
+          tar xfv ghr_v0.13.0_linux_amd64.tar.gz
+          ghr_v0.13.0_linux_amd64/ghr -u qurious-pixel -r Vita3K -recreate -n 'Automatic CI builds' -b "Corresponding commit: ${{ github.sha }}" continuous artifacts/
+      env:
+        DEFAULT_BRANCH: release-date
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+
