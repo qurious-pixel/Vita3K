@@ -28,7 +28,7 @@ jobs:
       - name: go
         run: |
           go get -u github.com/tcnksm/ghr
-          go install ghr
+          go install github.com/tcnksm/ghr
           ghr test
 
   build:
