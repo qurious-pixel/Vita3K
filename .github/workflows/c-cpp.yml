@@ -33,7 +33,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
         config: [Release]
         include:
           #- os: macos-latest
@@ -42,9 +42,9 @@ jobs:
           - os: ubuntu-latest
             cache_path: ~/.ccache
             extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/linux-x64.cmake -DUSE_DISCORD_RICH_PRESENCE=OFF
-          - os: windows-latest
-            cache_path: ~\AppData\Local\Mozilla\sccache
-            extra_cmake_args: -DBOOST_ROOT=C:\hostedtoolcache\windows\Boost\1.72.0\x86_64 -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/windows-x64.cmake -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
+          #- os: windows-latest
+          #  cache_path: ~\AppData\Local\Mozilla\sccache
+          #  extra_cmake_args: -DBOOST_ROOT=C:\hostedtoolcache\windows\Boost\1.72.0\x86_64 -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/windows-x64.cmake -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
 
     steps:
       - name: Set up build environment (macos-latest)
@@ -146,12 +146,24 @@ jobs:
       #    github_token: ${{ secrets.GITHUB_TOKEN }}
       #  if: github.ref == 'refs/heads/master'
 
-
+  create-release:
+    needs: [build]
+    runs-on: "ubuntu-20.04"
+    #if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v1
+        with:
+          name: ${{ matrix.os }}.zip
       - name: Upload
         shell: bash
         run: |
             #mkdir artifacts/
-            #ls -al
+            ls -al
             #mv *-latest.zip artifacts/
             ls -al artifacts/
             wget -c https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
