@@ -156,6 +156,10 @@ jobs:
       matrix:
         os: [ubuntu-latest]
     steps:
+      - name: Compute git short sha
+        id: git_short_sha
+        run: echo "::set-output name=value::$(git rev-parse --short HEAD)"
+
       - name: Download Artifacts
         uses: actions/download-artifact@v1
         with:
