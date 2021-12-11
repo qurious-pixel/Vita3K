@@ -33,7 +33,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
         config: [Release]
         include:
           #- os: macos-latest
@@ -154,7 +154,8 @@ jobs:
       - name: Upload
         run: |
             mkdir artifacts/
-            mv ${{ matrix.os }}.zip artifacts/
+            ls *.zip
+            mv *-latest.zip artifacts/
             ls -al artifacts/
             wget -c https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
             tar xfv ghr_v0.13.0_linux_amd64.tar.gz
