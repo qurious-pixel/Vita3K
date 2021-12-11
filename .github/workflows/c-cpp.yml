@@ -152,7 +152,7 @@ jobs:
         run: |
             #mkdir artifacts/
             ls -al
-            mv *-latest.zip artifacts/
+            #mv *-latest.zip artifacts/
             ls -al artifacts/
             wget -c https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
             tar xfv ghr_v0.13.0_linux_amd64.tar.gz
