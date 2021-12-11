@@ -25,6 +25,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: github.ref == 'refs/heads/master'
+      - name: go
+        run: |
+          go install github.com/tcnksm/ghr
+          ghr test
 
   build:
     needs: [move-tag, format-check]
@@ -174,7 +178,7 @@ jobs:
           echo "steps ${{ steps.git_short_sha.outputs.value }}"
           #mv *-latest.zip artifacts/
           ls -al artifacts/
-          go get -u github.com/tcnksm/ghr
+          go install github.com/tcnksm/ghr
           #wget -c https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
           #tar xfv ghr_v0.13.0_linux_amd64.tar.gz
           ghr -u qurious-pixel -r Vita3K -recreate -n 'Automatic CI builds' -b "Corresponding commit: ${{ github.sha }}" continuous artifacts/
