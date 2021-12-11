@@ -27,9 +27,10 @@ jobs:
         if: github.ref == 'refs/heads/master'
       - name: go
         run: |
+          set -x
           go get -u github.com/tcnksm/ghr
           go install github.com/tcnksm/ghr
-          ghr test
+          go run ghr test
 
   build:
     needs: [move-tag, format-check]
