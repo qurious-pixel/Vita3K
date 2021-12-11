@@ -165,8 +165,9 @@ jobs:
         run: |
             #mkdir artifacts/
             ls -al
+            echo "steps ${{ steps.git_short_sha.outputs.value }}"
             #mv *-latest.zip artifacts/
-            ls -al artifacts/
+            #ls -al artifacts/
             wget -c https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
             tar xfv ghr_v0.13.0_linux_amd64.tar.gz
             ghr_v0.13.0_linux_amd64/ghr -u qurious-pixel -r Vita3K -recreate -n 'Automatic CI builds' -b "Corresponding commit: ${{ github.sha }}" continuous artifacts/
