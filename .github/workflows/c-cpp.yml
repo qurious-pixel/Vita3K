@@ -146,16 +146,13 @@ jobs:
       #    github_token: ${{ secrets.GITHUB_TOKEN }}
       #  if: github.ref == 'refs/heads/master'
 
-  create-release:
-    needs: [build]
-    runs-on: "ubuntu-20.04"
-    #if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev'
-    steps:
+
       - name: Upload
+        shell: bash
         run: |
-            #mkdir artifacts/
+            mkdir artifacts/
             ls -al
-            #mv *-latest.zip artifacts/
+            mv *-latest.zip artifacts/
             ls -al artifacts/
             wget -c https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
             tar xfv ghr_v0.13.0_linux_amd64.tar.gz
