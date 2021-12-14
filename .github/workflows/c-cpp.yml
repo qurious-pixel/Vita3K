@@ -33,7 +33,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
+        os: [windows-latest]
         config: [Release]
         include:
           #- os: macos-latest
@@ -67,10 +67,10 @@ jobs:
           Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
           scoop install ninja sccache --global
           $url2 = "https://github.com/tcnksm/ghr/releases/download/v0.14.0/ghr_v0.14.0_windows_amd64.zip"
-          $dest2 = "C:\temp"
+          $dest2 = "D:\a\_temp"
           Invoke-WebRequest -Uri $url2 -OutFile $dest2
-          Expand-Archive -Path C:\temp\ghr_v0.14.0_windows_amd64.zip -DestinationPath C:\temp
-          copy C:\temp\ghr_v0.14.0_windows_amd64\ghr.exe C:\windows\system32
+          Expand-Archive -Path $dest2\ghr_v0.14.0_windows_amd64.zip -DestinationPath C:\temp
+          copy $dest2\ghr_v0.14.0_windows_amd64\ghr.exe C:\windows\system32
           echo "${env:PATH}" >> ${env:GITHUB_PATH}
         if: matrix.os == 'windows-latest'
 
