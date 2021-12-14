@@ -61,15 +61,15 @@ jobs:
 
       - name: Set up build environment (windows-latest)
         run: |
+          $Url = "https://sourceforge.net/projects/boost/files/boost-binaries/1.72.0/boost_1_72_0-msvc-14.2-64.exe"
+          (New-Object System.Net.WebClient).DownloadFile($Url, "$env:TEMP\boost.exe")
+          Start-Process -Wait -FilePath "$env:TEMP\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=C:\hostedtoolcache\windows\Boost\1.72.0\x86_64"
+          Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+          scoop install ninja sccache --global
           $url2 = "https://github.com/tcnksm/ghr/releases/download/v0.14.0/ghr_v0.14.0_windows_amd64.zip"
           (New-Object System.Net.WebClient).DownloadFile($url2, "$env:TEMP\ghr_v0.14.0_windows_amd64.zip")
           Expand-Archive -Path $env:TEMP\ghr_v0.14.0_windows_amd64.zip -DestinationPath $env:TEMP
-          copy $env:TEMP\ghr_v0.14.0_windows_amd64\ghr.exe C:\windows\system32
-          #$Url = "https://sourceforge.net/projects/boost/files/boost-binaries/1.72.0/boost_1_72_0-msvc-14.2-64.exe"
-          #(New-Object System.Net.WebClient).DownloadFile($Url, "$env:TEMP\boost.exe")
-          #Start-Process -Wait -FilePath "$env:TEMP\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=C:\hostedtoolcache\windows\Boost\1.72.0\x86_64"
-          #Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-          #scoop install ninja sccache --global
+          copy $env:TEMP\ghr_v0.14.0_windows_amd64\ghr.exe C:\windows\system32          
           echo "${env:PATH}" >> ${env:GITHUB_PATH}
         if: matrix.os == 'windows-latest'
 
