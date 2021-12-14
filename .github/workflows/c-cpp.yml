@@ -71,6 +71,7 @@ jobs:
           #Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
           #scoop install ninja sccache --global
           echo "${env:PATH}" >> ${env:GITHUB_PATH}
+          ghr TEST
         if: matrix.os == 'windows-latest'
 
       - uses: actions/cache@v2
