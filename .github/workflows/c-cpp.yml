@@ -25,12 +25,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: github.ref == 'refs/heads/master'
-      - name: go
-        run: |
-          set -x
-          go get -u github.com/tcnksm/ghr
-          go install github.com/tcnksm/ghr
-          go run ghr test
 
   build:
     needs: [move-tag, format-check]
@@ -45,12 +39,12 @@ jobs:
           #- os: macos-latest
           #  cache_path: ~/Library/Caches/ccache
           #  extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/macos-x64.cmake
-          - os: ubuntu-latest
-            cache_path: ~/.ccache
-            extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/linux-x64.cmake -DUSE_DISCORD_RICH_PRESENCE=OFF
-          #- os: windows-latest
-          #  cache_path: ~\AppData\Local\Mozilla\sccache
-          #  extra_cmake_args: -DBOOST_ROOT=C:\hostedtoolcache\windows\Boost\1.72.0\x86_64 -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/windows-x64.cmake -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
+          #- os: ubuntu-latest
+          #  cache_path: ~/.ccache
+          #  extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/linux-x64.cmake -DUSE_DISCORD_RICH_PRESENCE=OFF
+          - os: windows-latest
+            cache_path: ~\AppData\Local\Mozilla\sccache
+            extra_cmake_args: -DBOOST_ROOT=C:\hostedtoolcache\windows\Boost\1.72.0\x86_64 -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/windows-x64.cmake -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
 
     steps:
       - name: Set up build environment (macos-latest)
@@ -72,6 +66,11 @@ jobs:
           Start-Process -Wait -FilePath "$env:TEMP\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=C:\hostedtoolcache\windows\Boost\1.72.0\x86_64"
           Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
           scoop install ninja sccache --global
+          $url2 = "https://github.com/tcnksm/ghr/releases/download/v0.14.0/ghr_v0.14.0_windows_amd64.zip"
+          $dest2 = "C:\temp"
+          Invoke-WebRequest -Uri $url2 -OutFile $dest2
+          Expand-Archive -Path C:\temp\ghr_v0.14.0_windows_amd64.zip -DestinationPath C:\temp
+          copy C:\temp\ghr_v0.14.0_windows_amd64\ghr.exe C:\windows\system32
           echo "${env:PATH}" >> ${env:GITHUB_PATH}
         if: matrix.os == 'windows-latest'
 
