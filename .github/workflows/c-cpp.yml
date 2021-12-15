@@ -129,15 +129,15 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: vita3k-${{ matrix.os }}
+          name: vita3k-${{ steps.git_short_sha.outputs.value }}-${{ matrix.os }}
           #name: vita3k-${{ steps.git_short_sha.outputs.value }}-${{ matrix.os }}
           path: build/bin
 
-      - name: Zip Artifacts
-        uses: papeloto/action-zip@v1
-        with:
-          files: build/bin
-          dest: artifacts/${{ matrix.os }}.zip
+      #- name: Zip Artifacts
+      #  uses: papeloto/action-zip@v1
+      #  with:
+      #    files: build/bin
+      #    dest: artifacts${{ matrix.os }}.zip
       #  if: github.ref == 'refs/heads/master'
 
       #- name: Update the CI tag
@@ -165,8 +165,9 @@ jobs:
       - name: Upload
         shell: bash
         run: |
-          #mkdir artifacts/
+          mkdir artifacts/
           ls -al
+          ls -al vita3k-*
           #mv *-latest.zip artifacts/
           ls -al artifacts/
           #wget -c https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
@@ -175,5 +176,10 @@ jobs:
         env:
           DEFAULT_BRANCH: release-date
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
+      #- name: Zip Artifacts
+      #  uses: papeloto/action-zip@v1
+      #  with:
+      #    files: build/bin
+      #    dest: artifacts${{ matrix.os }}.zip
+      #  if: github.ref == 'refs/heads/master'        
 
