@@ -67,9 +67,9 @@ jobs:
           key: ccache-${{ matrix.os }}-${{ matrix.config }}-${{ github.sha }}
           restore-keys: ccache-${{ matrix.os }}-${{ matrix.config }}-   
         
-      - name: Set up SDL 2.0.16 (ubuntu-latest)
+      - name: Set up SDL 2.0.18 (ubuntu-latest)
         run: |
-          SDL2VER=2.0.16
+          SDL2VER=2.0.18
           if [[ ! -e ~/.ccache ]]; then
             mkdir ~/.ccache
           fi  
