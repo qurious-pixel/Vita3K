@@ -166,12 +166,14 @@ jobs:
         shell: bash
         run: |
           mkdir artifacts/
-          ls -al
-          ls -al vita3k-*
-          #mv *-latest.zip artifacts/
+          files=$(find . -name "*latest")
+          for f in $files; do
+            echo "Compressing $f"
+            (cd $(basename $f) && zip ../artifacts/$(basename $f  | cut -d "-" -f 3)-latest.zip *)
+          done
           ls -al artifacts/
-          #wget -c https://github.com/tcnksm/ghr/releases/download/v0.13.0/ghr_v0.13.0_linux_amd64.tar.gz
-          #tar xfv ghr_v0.13.0_linux_amd64.tar.gz
+          wget -c https://github.com/tcnksm/ghr/releases/download/v0.14.0/ghr_v0.14.0_linux_amd64.tar.gz
+          tar xfv ghr_v0.14.0_linux_amd64.tar.gz
           ghr -u qurious-pixel -r Vita3K -recreate -n 'Automatic CI builds' -b "Corresponding commit: ${{ github.sha }}" continuous artifacts/
         env:
           DEFAULT_BRANCH: release-date
