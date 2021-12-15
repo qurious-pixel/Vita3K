@@ -36,9 +36,9 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         config: [Release]
         include:
-          #- os: macos-latest
-          #  cache_path: ~/Library/Caches/ccache
-          #  extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/macos-x64.cmake
+          - os: macos-latest
+            cache_path: ~/Library/Caches/ccache
+            extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/macos-x64.cmake
           - os: ubuntu-latest
             cache_path: ~/.ccache
             extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/linux-x64.cmake -DUSE_DISCORD_RICH_PRESENCE=OFF
@@ -126,31 +126,10 @@ jobs:
           #name: vita3k-${{ steps.git_short_sha.outputs.value }}-${{ matrix.os }}
           path: build/bin
 
-      #- name: Zip Artifacts
-      #  uses: papeloto/action-zip@v1
-      #  with:
-      #    files: build/bin
-      #    dest: artifacts${{ matrix.os }}.zip
-      #  if: github.ref == 'refs/heads/master'
-
-      #- name: Update the CI tag
-      #  uses: Xotl/cool-github-releases@v1
-      #  with:
-      #    mode: update
-      #    isPrerelease: false
-      #    tag_name: continous
-      #    release_name: "Automatic CI builds"
-      #    body_mrkdwn: |
-      #      _This is the newest build, but Github date can't be updated. Corresponding commit: ${{ github.sha }}_
-      #    assets: ${{ matrix.os }}.zip
-      #    replace_assets: true
-      #    github_token: ${{ secrets.GITHUB_TOKEN }}
-      #  if: github.ref == 'refs/heads/master'
-
   create-release:
     needs: [build]
     runs-on: "ubuntu-20.04"
-    #if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev'
+    #if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
       - name: Download Artifacts
@@ -171,10 +150,5 @@ jobs:
         env:
           DEFAULT_BRANCH: release-date
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #- name: Zip Artifacts
-      #  uses: papeloto/action-zip@v1
-      #  with:
-      #    files: build/bin
-      #    dest: artifacts${{ matrix.os }}.zip
-      #  if: github.ref == 'refs/heads/master'        
+       
 
