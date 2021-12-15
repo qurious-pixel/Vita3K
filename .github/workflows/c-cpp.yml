@@ -33,7 +33,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest]
+        os: [ubuntu-latest]
         config: [Release]
         include:
           #- os: macos-latest
@@ -154,7 +154,13 @@ jobs:
       #    github_token: ${{ secrets.GITHUB_TOKEN }}
       #  if: github.ref == 'refs/heads/master'
 
-         
+  create-release:
+    needs: [build]
+    runs-on: "ubuntu-20.04"
+    #if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev'
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v1
       - name: Upload
         shell: bash
         run: |
