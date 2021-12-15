@@ -33,7 +33,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
         config: [Release]
         include:
           #- os: macos-latest
@@ -42,9 +42,9 @@ jobs:
           - os: ubuntu-latest
             cache_path: ~/.ccache
             extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/linux-x64.cmake -DUSE_DISCORD_RICH_PRESENCE=OFF
-          #- os: windows-latest
-          #  cache_path: ~\AppData\Local\Mozilla\sccache
-          #  extra_cmake_args: -DBOOST_ROOT=C:\hostedtoolcache\windows\Boost\1.72.0\x86_64 -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/windows-x64.cmake -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
+          - os: windows-latest
+            cache_path: ~\AppData\Local\Mozilla\sccache
+            extra_cmake_args: -DBOOST_ROOT=C:\hostedtoolcache\windows\Boost\1.72.0\x86_64 -DCMAKE_TOOLCHAIN_FILE=./cmake/toolchain/windows-x64.cmake -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
 
     steps:
       - name: Set up build environment (macos-latest)
@@ -57,9 +57,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get -y install ccache libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libgtk-3-dev libsdl2-dev ninja-build
-          wget -c https://github.com/tcnksm/ghr/releases/download/v0.14.0/ghr_v0.14.0_linux_amd64.tar.gz
-          tar xfv ghr_v0.14.0_linux_amd64.tar.gz
-          sudo cp ghr_v0.14.0_linux_amd64/ghr /usr/bin
         if: matrix.os == 'ubuntu-latest'
 
       - name: Set up build environment (windows-latest)
@@ -68,11 +65,7 @@ jobs:
           (New-Object System.Net.WebClient).DownloadFile($Url, "$env:TEMP\boost.exe")
           Start-Process -Wait -FilePath "$env:TEMP\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=C:\hostedtoolcache\windows\Boost\1.72.0\x86_64"
           Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-          scoop install ninja sccache --global
-          $url2 = "https://github.com/tcnksm/ghr/releases/download/v0.14.0/ghr_v0.14.0_windows_amd64.zip"
-          (New-Object System.Net.WebClient).DownloadFile($url2, "$env:TEMP\ghr_v0.14.0_windows_amd64.zip")
-          Expand-Archive -Path $env:TEMP\ghr_v0.14.0_windows_amd64.zip -DestinationPath $env:TEMP
-          copy $env:TEMP\ghr_v0.14.0_windows_amd64\ghr.exe C:\windows\system32          
+          scoop install ninja sccache --global     
           echo "${env:PATH}" >> ${env:GITHUB_PATH}
         if: matrix.os == 'windows-latest'
 
@@ -174,7 +167,7 @@ jobs:
           ls -al artifacts/
           wget -c https://github.com/tcnksm/ghr/releases/download/v0.14.0/ghr_v0.14.0_linux_amd64.tar.gz
           tar xfv ghr_v0.14.0_linux_amd64.tar.gz
-          ghr -u qurious-pixel -r Vita3K -recreate -n 'Automatic CI builds' -b "Corresponding commit: ${{ github.sha }}" continuous artifacts/
+          ghr_v0.14.0_linux_amd64/ghr -u qurious-pixel -r Vita3K -recreate -n 'Automatic CI builds' -b "Corresponding commit: ${{ github.sha }}" continuous artifacts/
         env:
           DEFAULT_BRANCH: release-date
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
