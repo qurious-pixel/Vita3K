@@ -70,7 +70,6 @@ jobs:
           .\install.ps1 -RunAsAdmin
           scoop install ninja sccache --global
           echo "${env:PATH}" >> ${env:GITHUB_PATH}
-          Get-Childitem -path ~\AppData\local -Recurse -Depth 1
         if: matrix.os == 'windows-latest'
 
       - uses: actions/cache@v2
@@ -104,6 +103,7 @@ jobs:
 
       - name: CMake
         run: |
+          Get-Childitem -path ~\AppData\local -Recurse -Depth 1
           cmake -B build -DCI=ON -DCMAKE_BUILD_TYPE=${{ matrix.config }} ${{ matrix.extra_cmake_args }} -G Ninja
           cmake --build build --config ${{ matrix.config }}
         if: matrix.os != 'windows-latest'
