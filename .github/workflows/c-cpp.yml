@@ -69,6 +69,7 @@ jobs:
           .\install.ps1 -RunAsAdmin
           scoop install ninja sccache --global
           echo "${env:PATH}" >> ${env:GITHUB_PATH}
+          Get-Childitem -path ~\AppData\ -Recurse -Depth 2
         if: matrix.os == 'windows-latest'
 
       - uses: actions/cache@v2
