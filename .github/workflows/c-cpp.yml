@@ -107,10 +107,14 @@ jobs:
           cmake --build build --config ${{ matrix.config }}
         if: matrix.os != 'windows-latest'
 
+      - name: Cache path
+        run: |
+          Get-Childitem -path ~\AppData\local -Recurse -Depth 1  
+        if: matrix.os == 'windows-latest'  
+          
       - name: CMake
         shell: cmd
         run: |
-          Get-Childitem -path ~\AppData\local -Recurse -Depth 1      
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat" -arch=x64
           cmake -B build -DCI=ON -DCMAKE_BUILD_TYPE=${{ matrix.config }} ${{ matrix.extra_cmake_args }} -G Ninja
           cmake --build build --config ${{ matrix.config }}
