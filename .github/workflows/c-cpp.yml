@@ -96,6 +96,11 @@ jobs:
           sudo make -C SDL2-${SDL2VER} install
         if: matrix.os == 'ubuntu-latest'
 
+      - name: Cache path
+        run: |
+          Get-Childitem -path ~\AppData\local\Mozilla\sccache -Recurse -Depth 2  
+        if: matrix.os == 'windows-latest'  
+        
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -106,11 +111,6 @@ jobs:
           cmake -B build -DCI=ON -DCMAKE_BUILD_TYPE=${{ matrix.config }} ${{ matrix.extra_cmake_args }} -G Ninja
           cmake --build build --config ${{ matrix.config }}
         if: matrix.os != 'windows-latest'
-
-      - name: Cache path
-        run: |
-          Get-Childitem -path ~\AppData\local -Recurse -Depth 1  
-        if: matrix.os == 'windows-latest'  
           
       - name: CMake
         shell: cmd
