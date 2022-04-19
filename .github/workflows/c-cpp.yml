@@ -24,7 +24,7 @@ jobs:
           tag-message: Last commit build by the CI
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: github.ref == 'refs/heads/master'
+        #if: github.ref == 'refs/heads/master'
 
   build:
     needs: [move-tag, format-check]
