@@ -27,7 +27,7 @@ jobs:
         #if: github.ref == 'refs/heads/master'
 
   build:
-    needs: [move-tag, format-check]
+    needs: [format-check] # move-tag, 
     runs-on: ${{ matrix.os }}
 
     strategy:
