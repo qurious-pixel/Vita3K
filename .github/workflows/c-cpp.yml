@@ -14,16 +14,16 @@ jobs:
       - name: Format check
         run: .github/format-check.sh
 
-  move-tag:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Move ci tag
-        uses: weareyipyip/walking-tag-action@master
-        with:
-          tag-name: continuous
-          tag-message: Last commit build by the CI
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #move-tag:
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - name: Move ci tag
+  #      uses: weareyipyip/walking-tag-action@master
+  #      with:
+  #        tag-name: continuous
+  #        tag-message: Last commit build by the CI
+  #      env:
+  #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         #if: github.ref == 'refs/heads/master'
 
   build:
