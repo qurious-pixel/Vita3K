@@ -149,6 +149,7 @@ jobs:
           wget -c https://github.com/tcnksm/ghr/releases/download/v0.14.0/ghr_v0.14.0_linux_amd64.tar.gz
           tar xfv ghr_v0.14.0_linux_amd64.tar.gz
           TAG_MESSAGE=$(curl -sL https://api.github.com/search/commits?q=$GITHUB_SHA | grep '"message":' | cut -d ":" -f 2 | cut -d "," -f 1)
+          GIT_SHORT=$(echo ${{ github.sha }} | cut -c 1-7)
           ghr_v0.14.0_linux_amd64/ghr -u Vita3K -r Vita3K -replace -n 'Master build' -b "Corresponding commit: ${{ github.sha }} /n$TAG_MESSAGE" ${{ github.sha }} artifacts/         
           ghr_v0.14.0_linux_amd64/ghr -u Vita3K -r Vita3K -recreate -n 'Automatic CI builds' -b "Corresponding commit: ${{ github.sha }}" continuous artifacts/
         env:
