@@ -14,20 +14,20 @@ jobs:
       - name: Format check
         run: .github/format-check.sh
 
-  move-tag:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Move ci tag
-        uses: merryhime/walking-tag-action@master
-        with:
-          tag-name: continuous
-          tag-message: Last commit build by the CI
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #move-tag:
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - name: Move ci tag
+  #      uses: merryhime/walking-tag-action@master
+  #      with:
+  #        tag-name: continuous
+  #        tag-message: Last commit build by the CI
+  #      env:
+  #        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         #if: github.ref == 'refs/heads/master'
 
   build:
-    needs: [format-check, move-tag] 
+    needs: [format-check] # , move-tag] 
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -149,7 +149,7 @@ jobs:
           wget -c https://github.com/tcnksm/ghr/releases/download/v0.14.0/ghr_v0.14.0_linux_amd64.tar.gz
           tar xfv ghr_v0.14.0_linux_amd64.tar.gz
           #TAG_MESSAGE="Test"
-          TAG_MESSAGE=$(curl -sL https://api.github.com/search/commits?q=${{ github.sha }} | grep '"message":' | cut -d ":" -f 2 | cut -d "," -f 1)
+          TAG_MESSAGE=$(curl -sL https://api.github.com/repos/$GITHUB_REPOSITORY/git/commits/${{ github.sha }} | grep '"message":' | cut -d ":" -f 2 | cut -d "," -f 1)
           GIT_SHORT=$(echo ${{ github.sha }} | cut -c 1-7)
           ghr_v0.14.0_linux_amd64/ghr -u qurious-pixel -r Vita3K -replace -n 'Master build' -b "$(printf "Corresponding commit: ${{ github.sha }} /n$TAG_MESSAGE")" $GIT_SHORT artifacts/         
           ghr_v0.14.0_linux_amd64/ghr -u qurious-pixel -r Vita3K -recreate -n 'Automatic CI builds' -b "Corresponding commit: ${{ github.sha }}" continuous artifacts/
