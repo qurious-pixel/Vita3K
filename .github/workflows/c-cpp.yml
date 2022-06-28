@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest] # [ubuntu-latest, windows-latest]
         config: [Release]
         include:
           - os: ubuntu-latest
@@ -94,6 +94,7 @@ jobs:
         run: |
           cmake -DCI=ON ${{ matrix.extra_cmake_args }} --preset ${{ matrix.cmake_preset }}
           cmake --build build/${{ matrix.cmake_preset }} --config ${{ matrix.config }}
+          echo "Git Count is ${GIT_COUNT}"
 
       - name: CTest
         working-directory: build/${{ matrix.cmake_preset }}
