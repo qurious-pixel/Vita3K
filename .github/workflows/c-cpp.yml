@@ -96,7 +96,7 @@ jobs:
           echo "Git Count is ${GIT_COUNT}"
           git rev-list HEAD --count
           echo "$(git rev-list HEAD --count)" >> $GITHUB_ENV
-          echo "Build Number is ${{ env.Build_Variable }}"
+          #echo "Build Number is ${{ env.Build_Variable }}"
 
       - name: CMake
         run: |
@@ -129,12 +129,20 @@ jobs:
   create-release:
     needs: [build]
     runs-on: "ubuntu-20.04"
-    if: github.ref == 'refs/heads/master'
+    #if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v3
 
       - name: Download Artifacts
         uses: actions/download-artifact@v3
+
+      - name: Get Build Variable
+        id: build_variable
+        run: |
+          echo "Git Count is ${GIT_COUNT}"
+          git rev-list HEAD --count
+          #echo "$(git rev-list HEAD --count)" >> $GITHUB_ENV
+          echo "Build Number is ${{ env.Build_Variable }}"
 
       - name: Upload
         shell: bash
