@@ -128,12 +128,12 @@ jobs:
           path: build/${{ matrix.cmake_preset }}/bin/${{ matrix.config }}
 
     outputs:
-      BuildTag: ${{ steps.build_variable.outputs.BuildTag }}
+      BuildTag: ${{ steps.build_variable.outputs.Build_Variable }}
         
 
   create-release:
     needs: [build]
-    runs-on: ["ubuntu-20.04", "${{ needs.build_variable.outputs.BuildTag }}"]
+    runs-on: "ubuntu-20.04"
     #if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v3
@@ -144,11 +144,13 @@ jobs:
       - name: Get Build Variable
         id: build_variable
         run: |
-          echo "Git Count is ${GIT_COUNT}"
-          git rev-list HEAD --count
-          #echo "$(git rev-list HEAD --count)" >> $GITHUB_ENV
-          echo "Build Number is ${{ env.Build_Variable }}"
-
+          echo "${{ needs.build.outputs.BuildTag }}"
+          echo "Build_Variable=${{ needs.build.outputs.BuildTag }}" >> $GITHUB_ENV
+          
+      - name: Get Build Variable
+        id: build_variable1
+        run: echo "${{ env.Build_Variable }}" 
+          
       - name: Upload
         shell: bash
         run: |
