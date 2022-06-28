@@ -28,12 +28,12 @@ jobs:
             cache_path: ~/.ccache
             extra_cmake_args:
             cmake_preset: linux-ninja-clang
-          - os: windows-latest
-            cache_path: |
-                C:\vcpkg\installed
-                C:\vcpkg\packages
-            extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
-            cmake_preset: windows-ninja
+          #- os: windows-latest
+          #  cache_path: |
+          #      C:\vcpkg\installed
+          #      C:\vcpkg\packages
+          #  extra_cmake_args: -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake -DCMAKE_C_COMPILER_LAUNCHER=sccache -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
+          #  cmake_preset: windows-ninja
 
     steps:
       - uses: actions/checkout@v3
@@ -90,11 +90,17 @@ jobs:
           sudo make -C SDL2-${SDL2VER} install
         if: matrix.os == 'ubuntu-latest'
 
+      - name: Get Build Variable
+        id: build_variable
+        run: |
+          echo "Git Count is ${GIT_COUNT}"
+          echo "::set-output name=Build_Variable::$(git rev-list HEAD --count)" >> $GITHUB_ENV
+          echo "Build Number is ${{ env.Build_Variable }}"
+
       - name: CMake
         run: |
           cmake -DCI=ON ${{ matrix.extra_cmake_args }} --preset ${{ matrix.cmake_preset }}
           cmake --build build/${{ matrix.cmake_preset }} --config ${{ matrix.config }}
-          echo "Git Count is ${GIT_COUNT}"
 
       - name: CTest
         working-directory: build/${{ matrix.cmake_preset }}
@@ -104,13 +110,13 @@ jobs:
         id: git_short_sha
         run: echo "::set-output name=value::$(git rev-parse --short HEAD)"
 
-      - name: Get Build Variable
-        id: build_variable
-        run: |
-          echo "Git Count is ${GIT_COUNT}"
-          echo "Build_Variable=${GIT_COUNT}" >> $GITHUB_ENV
-          echo ${{ env.Build_Variable }}
-        if: matrix.os == 'ubuntu-latest'
+      #- name: Get Build Variable
+      #  id: build_variable
+      #  run: |
+      #    echo "Git Count is ${GIT_COUNT}"
+      #    echo "Build_Variable=${GIT_COUNT}" >> $GITHUB_ENV
+      #    echo ${{ env.Build_Variable }}
+      #  if: matrix.os == 'ubuntu-latest'
 
       - uses: actions/upload-artifact@v3
         with:
