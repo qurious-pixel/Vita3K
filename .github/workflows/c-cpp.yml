@@ -128,12 +128,12 @@ jobs:
           path: build/${{ matrix.cmake_preset }}/bin/${{ matrix.config }}
 
     outputs:
-      BuildTag: ${{ build.steps.outputs.build_variable }}
+      BuildTag: ${{ steps.build_variable.outputs.BuildTag }}
         
 
   create-release:
     needs: [build]
-    runs-on: ["ubuntu-20.04", "${{ needs.steps.outputs.build_variable }}"]
+    runs-on: ["ubuntu-20.04", "${{ needs.build_variable.outputs.BuildTag }}"]
     #if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v3
