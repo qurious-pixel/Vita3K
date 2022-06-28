@@ -92,7 +92,7 @@ jobs:
 
       - name: Get Build Variable
         id: build_variable
-        run: echo "::set-output name=Build_Variable::"$(git rev-list HEAD --count)"
+        run: echo "::set-output name=Build_Variable::$(git rev-list HEAD --count)"
         
       - name: Get Build Variable
         id: build_variable2
