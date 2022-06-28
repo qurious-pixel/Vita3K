@@ -96,6 +96,11 @@ jobs:
           echo "Git Count is ${GIT_COUNT}"
           git rev-list HEAD --count
           echo "Build_Variable=$(git rev-list HEAD --count)" >> $GITHUB_ENV
+          echo "Build Number is $Build_Variable"
+
+      - name: Get Build Variable
+        id: build_variable2
+        run: |
           echo "Build Number is ${{ env.Build_Variable }}"
 
       - name: CMake
@@ -129,7 +134,7 @@ jobs:
   create-release:
     needs: [build]
     runs-on: "ubuntu-20.04"
-    #if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v3
 
