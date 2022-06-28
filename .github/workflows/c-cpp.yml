@@ -92,11 +92,7 @@ jobs:
 
       - name: Get Build Variable
         id: build_variable
-        run: |
-          echo "Git Count is ${GIT_COUNT}"
-          git rev-list HEAD --count
-          echo "Build_Variable=$(git rev-list HEAD --count)" >> $GITHUB_ENV
-          echo "Build Number is $Build_Variable"
+        run: echo "Build_Variable=$(git rev-list HEAD --count)" >> $GITHUB_ENV
 
       - name: Get Build Variable
         id: build_variable2
@@ -131,10 +127,14 @@ jobs:
           # generators work on CMake
           path: build/${{ matrix.cmake_preset }}/bin/${{ matrix.config }}
 
+    outputs:
+      BuildTag: ${{ build.steps.outputs.build_variable }}
+        
+
   create-release:
     needs: [build]
-    runs-on: "ubuntu-20.04"
-    if: github.ref == 'refs/heads/master'
+    runs-on: ["ubuntu-20.04", "${{ needs.steps.outputs.build_variable }}"]
+    #if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v3
 
