@@ -95,7 +95,7 @@ jobs:
         run: |
           echo "Git Count is ${GIT_COUNT}"
           git rev-list HEAD --count
-          echo "$(git rev-list HEAD --count)" >> $GITHUB_ENV
+          #echo "$(git rev-list HEAD --count)" >> $GITHUB_ENV
           #echo "Build Number is ${{ env.Build_Variable }}"
 
       - name: CMake
