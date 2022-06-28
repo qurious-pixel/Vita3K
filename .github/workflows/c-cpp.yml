@@ -92,12 +92,13 @@ jobs:
 
       - name: Get Build Variable
         id: build_variable
-        run: echo "Build_Variable=$(git rev-list HEAD --count)"
+        run: echo "::set-output name=Build_Variable::"$(git rev-list HEAD --count)"
         
       - name: Get Build Variable
         id: build_variable2
         run: |
-          echo "Build Number is ${{ steps.build_variable.outputs.Build_Variable }}"
+          echo "Build Number Tag is ${{ steps.build_variable.outputs.BuildTag }}"
+          echo "Build Number Var is ${{ steps.build_variable.outputs.Build_Variable }}"
 
       - name: CMake
         run: |
