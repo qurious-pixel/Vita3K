@@ -95,8 +95,8 @@ jobs:
         run: |
           echo "Git Count is ${GIT_COUNT}"
           git rev-list HEAD --count
-          #echo "$(git rev-list HEAD --count)" >> $GITHUB_ENV
-          #echo "Build Number is ${{ env.Build_Variable }}"
+          echo "Build_Variable=$(git rev-list HEAD --count)" >> $GITHUB_ENV
+          echo "Build Number is ${{ env.Build_Variable }}"
 
       - name: CMake
         run: |
@@ -156,7 +156,7 @@ jobs:
           ls -al artifacts/
           wget -c https://github.com/tcnksm/ghr/releases/download/v0.14.0/ghr_v0.14.0_linux_amd64.tar.gz
           tar xfv ghr_v0.14.0_linux_amd64.tar.gz
-          ghr_v0.14.0_linux_amd64/ghr -u Vita3K -r Vita3K -recreate -n 'Automatic CI builds' -b "Corresponding commit: ${{ github.sha }}\n Vita3K Build ${{ env.Build_Variable }}" continuous artifacts/
+          ghr_v0.14.0_linux_amd64/ghr -u qurious-pixel -r Vita3K -recreate -n 'Automatic CI builds' -b "Corresponding commit: ${{ github.sha }}\n Vita3K Build ${{ env.Build_Variable }}" continuous artifacts/
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
        
