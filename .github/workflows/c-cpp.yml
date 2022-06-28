@@ -94,6 +94,7 @@ jobs:
         id: build_variable
         run: |
           echo "Git Count is ${GIT_COUNT}"
+          git rev-list HEAD --count
           echo "::set-output name=Build_Variable::$(git rev-list HEAD --count)" >> $GITHUB_ENV
           echo "Build Number is ${{ env.Build_Variable }}"
 
