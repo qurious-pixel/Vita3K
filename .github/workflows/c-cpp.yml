@@ -87,6 +87,8 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          repository: Zangetsu38/Vita3K
+          ref: content
           submodules: recursive
 
       - name: CMake
